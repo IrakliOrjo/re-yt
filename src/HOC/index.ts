@@ -1,0 +1,1 @@
+export { SVGFactory } from "./SVGFactory";
