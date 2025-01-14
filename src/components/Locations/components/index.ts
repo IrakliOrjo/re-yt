@@ -1,0 +1,1 @@
+export {LocationPlate} from './LocationPlate'
