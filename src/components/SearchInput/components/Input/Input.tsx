@@ -2,7 +2,7 @@ import { FC } from "react";
 
 interface InputProps {
     placeholder?: string;
-    value: string
+    value: string | undefined
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
 }

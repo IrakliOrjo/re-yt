@@ -7,10 +7,10 @@ interface ISelectOptionProps {
 
 export const SelectOption:FC <ISelectOptionProps> = ({ houseType}) => {
 
-  const setType = useHouseStore(store => store.setType)
+  const updateFilters = useHouseStore(store => store.updateFilters);
 
   return (
-    <p onClick={() => setType(houseType)} className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-300" >{houseType}</p>
+    <p onClick={() => updateFilters({type: houseType})} className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-300" >{houseType}</p>
   )
 }
 

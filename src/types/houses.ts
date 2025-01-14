@@ -34,37 +34,26 @@ export interface House {
   export interface HouseStore {
     houses: House[];
     filteredHouses: House[];
-    titleQuery: string;
-    locationQuery: string;
-    realtyType: string;
+    filters: HouseFilters;
     loading: boolean;
-    error: string | null;
-
-    // Filters
- 
-    setLocationQuery: (query: string) => void;
-    setTitleQuery: (query: string) => void;
-    setType: (query: string) => void;
-    setSearchTitle: (query: string) => House[];
-    setSearchLocation: (query: string) => House[];
+    error: null | string;
+    updateFilters: (filterUpdate: Partial<HouseFilters>) => void;
+    toggleAmenity: (amenity: string) => void;
     clearFilters: () => void;
-    applyAllFilters: () =>  House[];
-    
-    // Loading states
     setLoading: (loading: boolean) => void;
     setError: (error: string | null) => void;
-}
+  }
 
   export interface HouseFilters {
-    minPrice?: number;
-    maxPrice?: number;
-    bedrooms?: number;
-    bathrooms?: number;
-    type?: 'House' | 'Apartment';
+    minPrice?: number | string;
+    maxPrice?: number | string;
+    bedrooms?: number | string;
+    bathrooms?: number | string;
+    type?: 'House' | 'Apartment' | 'All';
     city?: string;
-    minArea?: number;
-    maxArea?: number;
+    minArea?: number | string;
+    maxArea?: number | string;
     amenities?: string[];
-    searchQuery?:string;
+    searchQuery?:string
     locationQuery?:string;
   }

@@ -1,122 +1,145 @@
 import { create } from 'zustand'
-import { House, HouseStore } from '../types/houses';
+import { House, HouseFilters, HouseStore } from '../types/houses';
 import { houses as initialHouses } from '../const/houses';
 
-const useHouseStore = create<HouseStore>((set,get) => ({
-  houses: initialHouses as House[], 
+const initialFilters: HouseFilters = {
+  minPrice: undefined,
+  maxPrice: undefined,
+  bedrooms: undefined,
+  bathrooms: undefined,
+  type: 'All',
+  city: undefined,
+  minArea: undefined,
+  maxArea: undefined,
+  amenities: undefined,
+  searchQuery: undefined,
+  locationQuery: ''
+};
+
+const useHouseStore = create<HouseStore>((set, get) => ({
+  houses: initialHouses as House[],
   filteredHouses: initialHouses as House[],
-  titleQuery: '',
-  locationQuery: '',
-  realtyType: 'All',
+  filters: initialFilters,
   loading: false,
   error: null,
 
-  // Actions
-
-  applyAllFilters: () => {
-    const { houses, titleQuery, locationQuery, realtyType } = get();
+  updateFilters: (filterUpdate: Partial<HouseFilters>) => {
+    const currentState = get();
+    const newFilters = { ...currentState.filters, ...filterUpdate };
     
-    return houses.filter(house => {
-      // Type filter
-      const matchesType = realtyType === 'All' || house.type.includes(realtyType);
-      
-      // Title filter
-      const matchesTitle = !titleQuery || 
-        house.title.toLowerCase().includes(titleQuery.toLowerCase());
-      
-      // Location filter
-      const searchTerm = locationQuery.toLowerCase().trim();
-      const matchesLocation = !locationQuery || 
-        house.city.toLowerCase().includes(searchTerm) ||
-        house.street.toLowerCase().includes(searchTerm) ||
-        house.district.toLowerCase().includes(searchTerm);
-      
-      // Return true only if all active filters match
-      return matchesType && matchesTitle && matchesLocation;
+    let filtered = currentState.houses;
+
+    // Apply numeric range filters
+    if (newFilters.minPrice !== undefined && newFilters.minPrice !== '') {
+      const minPriceNum = Number(newFilters.minPrice);
+      if (!isNaN(minPriceNum)) {
+        filtered = filtered.filter(house => house.price >= minPriceNum);
+      }
+    }
+    if (newFilters.maxPrice !== undefined && newFilters.maxPrice !== '') {
+      const maxPriceNum = Number(newFilters.maxPrice);
+      if (!isNaN(maxPriceNum)) {
+        filtered = filtered.filter(house => house.price <= maxPriceNum);
+      }
+    }
+    if (newFilters.minArea !== undefined && newFilters.minArea !== '') {
+      const minAreaNum = Number(newFilters.minArea);
+      if (!isNaN(minAreaNum)) {
+        filtered = filtered.filter(house => house.area >= minAreaNum);
+      }
+    }
+    if (newFilters.maxArea !== undefined && newFilters.maxArea !== '') {
+      const maxAreaNum = Number(newFilters.maxArea);
+      if (!isNaN(maxAreaNum)) {
+        filtered = filtered.filter(house => house.area <= maxAreaNum);
+      }
+    }
+
+    // Apply exact match filters
+    if (newFilters.bedrooms !== undefined) {
+      filtered = filtered.filter(house => house.bedrooms === newFilters.bedrooms);
+    }
+    if (newFilters.bathrooms !== undefined) {
+      filtered = filtered.filter(house => house.bathrooms === newFilters.bathrooms);
+    }
+    if (newFilters.type !== undefined) {
+      filtered = filtered.filter(house => {
+        if(newFilters.type === 'All') return true;
+        if(house.type === newFilters.type) return true;
+      });
+    }
+
+    // Apply city filter
+    if (newFilters.city) {
+      filtered = filtered.filter(house => 
+        house.city.toLowerCase().includes(newFilters.city!.toLowerCase())
+      );
+    }
+
+    // Apply amenities filter
+    if (newFilters.amenities && newFilters.amenities.length > 0) {
+      console.log('newFilters.amenities', newFilters.amenities);
+      filtered = filtered.filter(house => 
+        
+        newFilters.amenities!.some(amenity => 
+        {
+          console.log('amenity', amenity);
+          console.log('house.amenities', house.amenities);
+          console.log('house.amenities.includes(amenity)', house.amenities.includes(amenity));
+
+          return house.amenities.includes(amenity)
+        }
+        )
+      );
+    }
+
+    // Apply search query
+    if (newFilters.searchQuery) {
+      const query = newFilters.searchQuery.toLowerCase();
+      filtered = filtered.filter(house =>
+        house.title.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply location query
+    if (newFilters.locationQuery) {
+      const query = newFilters.locationQuery.toLowerCase();
+      filtered = filtered.filter(house =>
+        house.city.toLowerCase().includes(query) ||
+        house.street.toLowerCase().includes(query) ||
+        house.district.toLowerCase().includes(query)
+      );
+    }
+    
+
+    set({
+      filters: newFilters,
+      filteredHouses: filtered
     });
   },
-
-  setType: (type:string) => {
- 
-    if (type === 'All') {
-      set(() => ({
-          realtyType: type,
-          filteredHouses: get().houses
-      }));
-      return;
-  }
-
-    const filteredResults = get().houses.filter((house) => 
-       house.type.includes(type)
-);
-
-
-      set(() => ({
-        realtyType: type,
-        filteredHouses:filteredResults
-      }))
-    },
-  setLocationQuery: (query: string) =>
-      set(() => ({
-        locationQuery: query,
-      })),
-
-  setTitleQuery: (query: string) =>
-      set(() => ({
-        titleQuery: query,
-      })),
-  
-  
-  setSearchTitle: (query: string) => {
-      const filteredResults = get().houses.filter((house) => 
-            house.title.toLowerCase().includes(query.toLowerCase())
-      );
-
-        set({
-          filteredHouses: filteredResults,
-          titleQuery: query  // Update titleQuery instead of searchQuery
-        });
-        
-        return filteredResults;
-    },
-
-    setSearchLocation: (query: string) => {
-        const searchTerm = query.toLowerCase().trim();
-        
-        const filteredResults = get().houses.filter((house) => 
-            house.city.toLowerCase().includes(searchTerm) ||
-            house.street.toLowerCase().includes(searchTerm) ||
-            house.district.toLowerCase().includes(searchTerm)
-        );
-
-        set({
-            filteredHouses: filteredResults,
-            locationQuery: query  // Update locationQuery instead of searchQuery
-        });
-
-        return filteredResults;
-    },
- 
-      
+  toggleAmenity: (amenity: string) => {
+    const currentFilters = get().filters;
+    const currentAmenities = currentFilters.amenities || [];
+    console.log('currentAmenities', currentAmenities);
     
- 
-      clearFilters: () =>
-        set((state) => ({
-          filteredHouses: state.houses,
-          searchQuery: '',
-        })),
+    const newAmenities = currentAmenities.includes(amenity)
+      ? currentAmenities.filter(a => a !== amenity)
+      : [...currentAmenities, amenity];
+
+     console.log('newAmenities', newAmenities); 
     
- 
-      setLoading: (loading) =>
-        set(() => ({
-          loading,
-        })),
-    
- 
-      setError: (error) =>
-        set(() => ({
-          error,
-        })),
-  }));
-  
-  export default useHouseStore
+    get().updateFilters({ amenities: newAmenities });
+  },
+
+  clearFilters: () => {
+    set(state => ({
+      filters: initialFilters,
+      filteredHouses: state.houses
+    }));
+  },
+
+  setLoading: (loading: boolean) => set({ loading }),
+  setError: (error: string | null) => set({ error })
+}));
+
+export default useHouseStore;
