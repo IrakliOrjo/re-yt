@@ -6,6 +6,7 @@ export default {
     extend: {
       backgroundImage: {
         "hero-bg": "url('/public/wallpaper1.jpg')",
+        "newyork-bg": "url('/public/newyork.jpg')",
       },
       fontFamily: {
         // Primary font: DM Sans - clean, modern, highly readable
@@ -15,5 +16,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss-animated')
+  ],
 };
