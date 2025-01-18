@@ -9,6 +9,7 @@ interface IPaginationReturn  {
     prevPage: () => void
     goToPage: (pageNumber: number) => void
     resetPagination: () => void
+    direction: 'next' | 'prev'
 
 }
 
@@ -17,33 +18,57 @@ export const usePagination =  (
     itemsPerPage: number = 6
   ): IPaginationReturn  => {
   const [ currentPage, setCurrentPage ] = useState(1)
+  const [ displayedItems, setDisplayedItems ] = useState<ILocation[]>([])
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
 
   const totalPages = Math.ceil(items.length / itemsPerPage)
 
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
-    console.log('startIndex', startIndex)
-    console.log('endIndex', endIndex)
-    return items.slice(startIndex, endIndex)
+    const newItems  = items.slice(startIndex, endIndex)
+
+    if(displayedItems.length > 0){
+      const numNewItems = newItems.length;
+      const remainingItems = direction === 'next' ? displayedItems.slice(numNewItems) : displayedItems.slice(0, -numNewItems);
+      const updatedItems = direction === 'next'
+        ? [...remainingItems, ...newItems].slice(0, 6)
+        : [...newItems, ...remainingItems].slice(0, 6);
+    
+      setDisplayedItems(updatedItems);
+      return updatedItems;
+  } else {
+      const initialItems = newItems.slice(0, 6);
+      setDisplayedItems(initialItems);
+      return initialItems;
+    }
+    
   },[items, currentPage, itemsPerPage])
 
   const nextPage = () => {
-    setCurrentPage((prev) => (prev < totalPages) ? prev + 1 : prev)
-  }
+    if (currentPage < totalPages) {
+      setDirection('next');
+      setCurrentPage(prev => prev + 1);
+    }
+  };
 
   const prevPage = () => {
-    setCurrentPage((prev) => (prev > 1) ? prev - 1 : prev)
-  }
+    if (currentPage > 1) {
+      setDirection('prev');
+      setCurrentPage(prev => prev - 1);
+    }
+  };
 
-  const goToPage = (pageNumber: number ) => {
-    const page = Math.max(1, Math.min(pageNumber, totalPages))
-    setCurrentPage(page)
-  }
+  const goToPage = (pageNumber: number) => {
+    const page = Math.max(1, Math.min(pageNumber, totalPages));
+    setDirection(page > currentPage ? 'next' : 'prev');
+    setCurrentPage(page);
+  };
 
   const resetPagination = () => {
-    setCurrentPage
-  }
+    setCurrentPage(1);
+    setDirection('next');
+  };
 
   return {
     currentPage,
@@ -52,7 +77,8 @@ export const usePagination =  (
     paginatedData,
     prevPage,
     goToPage,
-    resetPagination
+    resetPagination,
+    direction
   }
 
 }
