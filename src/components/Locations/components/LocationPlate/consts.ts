@@ -7,27 +7,27 @@ export const CITYS: ILocation[] = [
         title: 'New York',
     },
     {
-        img: 'bg-newyork-bg',
+        img: 'bg-la-bg',
         title: 'Los Angeles',
     },
     {
-        img: 'bg-newyork-bg',
+        img: 'bg-san-francisco-bg',
         title: 'San Francisco',
     },
     {
-        img: 'bg-newyork-bg',
+        img: 'bg-chicago-bg',
         title: 'Chicago',
     },
     {
-        img: 'bg-newyork-bg',
+        img: 'bg-miami-bg',
         title: 'Miami',
     },
     {
-        img: 'bg-newyork-bg',
+        img: 'bg-las-vegas-bg',
         title: 'Las Vegas',
     },
     {
-        img: 'bg-newyork-bg',
+        img: 'bg-detroit-bg',
         title: 'Detroit',
     },
 
