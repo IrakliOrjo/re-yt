@@ -10,8 +10,6 @@ export const Locations = () => {
         paginatedData, 
         currentPage, 
         totalPages,
-        nextPage,
-        prevPage,
         goToPage,
         direction
     } = usePagination(CITYS)
@@ -20,11 +18,11 @@ export const Locations = () => {
 
   return (
     <div className="flex flex-col justify-center items-center py-20">
-        <p className="text-blue-600 text-[20px]">Featured Properties</p>
-        <h1 className="text-[34px] mb-9 font-bold">Recommended For You</h1>
-        <div className="flex w-full border px-2 overflow-hidden">
+        <p className="text-blue-600 text-[20px]">Explore Cities</p>
+        <h1 className="text-[34px] mb-9 font-bold">Our Location For You</h1>
+        <div className="flex w-full  px-2 overflow-hidden">
             <div 
-            className="flex justify-between gap-2 w-full min-h-[350px] "
+            className="flex justify-between gap-2 w-full min-h-[370px] "
              
             >
                 {paginatedData.map(({img,title},index) => {

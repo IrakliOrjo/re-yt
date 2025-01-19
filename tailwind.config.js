@@ -7,6 +7,12 @@ export default {
       backgroundImage: {
         "hero-bg": "url('/public/wallpaper1.jpg')",
         "newyork-bg": "url('/public/newyork.jpg')",
+        "la-bg": "url('/public/la.jpg')",
+        "san-francisco-bg": "url('/public/san-francisco.jpg')",
+        "chicago-bg": "url('/public/chicago.jpg')",
+        "miami-bg": "url('/public/miami.jpg')",
+        "las-vegas-bg": "url('/public/las-vegas.jpg')",
+        "detroit-bg": "url('/public/detroit.jpg')",
       },
       fontFamily: {
         // Primary font: DM Sans - clean, modern, highly readable

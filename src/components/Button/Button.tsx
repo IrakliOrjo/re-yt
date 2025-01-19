@@ -9,15 +9,16 @@ interface ButtonProps {
     isActive?: boolean
     leftIcon?: ReactNode
     rightIcon?: ReactNode
+    className?: string
     }
 
-export const Button:FC<ButtonProps> = ({ text, transparent, variant='primary', isActive, leftIcon, rightIcon, onClick }) => {
+export const Button:FC<ButtonProps> = ({ text, transparent, variant='primary', isActive, leftIcon, rightIcon, onClick, className }) => {
 
 
   if(variant === 'outlined') {
     return (<button 
               className={`text-white ${isActive ? 'bg-blue-600 border-blue-600' : 'border-white'} hover:bg-blue-600  
-              hover:text-white py-[12px] px-[55px] flex gap-2 font-[500] border hover:border-transparent rounded-full`}
+              hover:text-white py-[12px] px-[55px] flex gap-2 font-[500] border hover:border-transparent rounded-full ${className}`}
               onClick={onClick}
              >
                 {leftIcon}
@@ -28,7 +29,7 @@ export const Button:FC<ButtonProps> = ({ text, transparent, variant='primary', i
 
   return (
     <button className={`${transparent ? 'bg-transparent text-black' : 'bg-blue-500 text-white'}  hover:bg-blue-700 font-[500]
-             hover:text-white py-[12px] px-[20px] flex gap-2 border border-blue-500 hover:border-transparent rounded-full`}
+             hover:text-white py-[12px] px-[20px] flex gap-2 border border-blue-500 hover:border-transparent rounded-full ${className}`}
               onClick={onClick}
              >
                 {leftIcon}
