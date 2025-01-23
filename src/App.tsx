@@ -1,5 +1,5 @@
 
-import { Services } from './components'
+import { OurTeam, Services } from './components'
 import { BenefitSection } from './components/BenfitSection'
 import { FeaturedProperties } from './components/FeaturedProperties/FeaturedProperties'
 import { Header } from './components/Header'
@@ -16,6 +16,7 @@ function App() {
       <Locations />
       <Services />
       <BenefitSection />
+      <OurTeam />
     </div>
   )
 }
