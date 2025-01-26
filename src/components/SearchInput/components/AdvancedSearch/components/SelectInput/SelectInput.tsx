@@ -17,9 +17,9 @@ const MenuProps = {
 
 
 
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
+function getStyles(name: string, selectedNumber: string[] | string, theme: Theme) {
   return {
-    fontWeight: personName.includes(name)
+    fontWeight: selectedNumber.includes(name)
       ? theme.typography.fontWeightMedium
       : theme.typography.fontWeightRegular,
   };
@@ -32,15 +32,15 @@ interface ISelectInputProps {
 
 export const SelectInput:FC <ISelectInputProps> = ({itemName}) => {
     const theme = useTheme();
-    const [personName, setPersonName] = useState<string[]>([]);
+    const [selectedNumber, setSelectedNumber] = useState<string>('');
   
-    const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const handleChange = (event: SelectChangeEvent) => {
       const {
         target: { value },
       } = event;
-      setPersonName(
+      setSelectedNumber(
         // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
+        value as string
       );
     };
   
@@ -51,7 +51,6 @@ export const SelectInput:FC <ISelectInputProps> = ({itemName}) => {
           <Select
             labelId="demo-multiple-chip-label"
             id="demo-multiple-chip"
-            multiple
             sx={{ 
                 borderRadius: '35px', 
                 borderWidth: '1px', 
@@ -65,23 +64,16 @@ export const SelectInput:FC <ISelectInputProps> = ({itemName}) => {
                   borderColor: 'gray'  // or whatever color you want
                 }
               }}
-            value={personName}
+            value={selectedNumber}
             onChange={handleChange}
             input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
             MenuProps={MenuProps}
           >
-            {rooms.map((room) => (
+            {rooms?.map((room) => (
               <MenuItem
                 key={itemName}
                 value={room}
-                style={getStyles(room, personName, theme)}
+                style={getStyles(room, selectedNumber, theme)}
               >
                 {room}
               </MenuItem>

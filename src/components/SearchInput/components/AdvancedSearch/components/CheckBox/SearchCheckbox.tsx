@@ -32,7 +32,7 @@ export const SearchCheckbox:FC<ICheckboxProps> = ({amenitie,onClick}) => {
   return (
     <div className='flex items-center'>
       <Checkbox onClick={onClick} {...label} />
-      <span className='text-[16px] text-gray-800'>{amenitie}</span>
+      <span className='text-[14px] text-gray-600'>{amenitie}</span>
     </div>
   )
 }

@@ -21,26 +21,30 @@ interface IEmployeeCardProps {
 
 export const EmployeeCard:FC<IEmployeeCardProps> = ({image,employeeName,position,socials}) => {
   return (
-    <div className="flex flex-col  group cursor-pointer gap-8">
+    <div className="flex flex-col  group cursor-pointer w-full gap-8">
         <div className="overflow-hidden rounded-2xl relative">
-            <img className="rounded-2xl max-w-[300px] max-h-[300px] group-hover:scale-105 aspect-square transition-transform duration-700 ease-in" 
+            <img className="rounded-2xl w-full  group-hover:scale-105 aspect-square transition-transform duration-700 ease-in" 
             src={image} alt={employeeName} />
-            <div className="absolute max-w-[200px] inset-x-0 mx-auto bottom-4 flex justify-around items-center
-            rounded-xl bg-black/20  backdrop-blur-md h-[42px] px-3 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out 
+            <div className="absolute xl:max-w-[200px]  inset-x-0 mx-auto bottom-4 flex 
+            justify-between items-center max-w-[350px]
+            rounded-xl bg-black/20  backdrop-blur-md h-[42px] xl:px-3 opacity-0 
+            group-hover:opacity-100 transition-all duration-500 ease-in-out 
             translate-y-full group-hover:translate-y-0">
               <a 
                 href={socials.facebook}
-                className="border-r-[1px]  border-[white]"
+                className="border-r-[1px] w-[90px]   flex justify-center items-center border-[white]/50"
               ><FacebookIcon className="h-5 hover:stroke-blue-700 hover:fill-blue-700" strokeColor="white"  fill="white" /></a>
               <a 
                 href={socials.facebook}
-                className="border-r-[1px] pr-2 border-[white]"
+                className="border-r-[1px] w-[90px]   flex justify-center items-center border-[white]/50"
                 ><XIcon className="h-5 hover:stroke-blue-700 hover:fill-blue-700"  strokeColor="white" fill="white" /></a>
               <a 
                 href={socials.facebook}
-                className="border-r-[1px] pr-2 border-[white]"
+                className="border-r-[1px] w-[90px]   flex justify-center items-center border-[white]/50"
                 ><LinkedinIcon className="h-5 hover:stroke-blue-700 hover:fill-blue-700" strokeColor="white" fill="white" /></a>
-              <a href={socials.facebook}>
+              <a 
+                className="w-[90px]   flex justify-center items-center border-[white]/50"
+                href={socials.facebook}>
                 <InstagramIcon className="h-5 hover:stroke-blue-700 hover:fill-blue-700" strokeColor="white" fill="white" /></a>
             </div>
         </div>

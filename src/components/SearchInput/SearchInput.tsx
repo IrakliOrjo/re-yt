@@ -20,18 +20,22 @@ export const SearchInput = () => {
   
 
   return (
-    <div className="w-[1290px] h-[92px] mt-[20px] bg-white rounded-full flex  items-center flex-col relative">
-      <div className="flex  items-center mb-5 px-[40px] py-[20px]">
-      <div className="flex flex-col border-r-2 px-3 mr-4">
-        <p className="text-gray-700 text-sm">Type</p>
+    <div className="lg:w-[1290px] lg:h-[92px] mt-[20px] bg-white lg:rounded-full 
+    flex items-center flex-col relative rounded-2xl w-full">
+      <div className="flex flex-col xl:flex-row gap-6 items-center mb-5 xl:px-[40px] py-[20px]
+      w-full px-4">
+      <div className="flex flex-col xl:border-r-2 px-3 xl:mr-4 w-full gap-2">
+        <p className="text-gray-400 text-sm font-[500]">Type</p>
         <HouseTypeDropdown />
       </div>
-      <div className="flex flex-col border-r-2 px-3 mr-6">
-        <p className="text-gray-700 text-sm">Location</p>
-      <Input value={locationQuery} onChange={(e) => updateFilters({locationQuery: e.target.value})} placeholder="Search Location" />
+      <div className="flex flex-col xl:border-r-2 px-3 xl:mr-6 w-full gap-2">
+        <p className="text-gray-400 text-sm font-[500]">Location</p>
+      <Input value={locationQuery} 
+      onChange={(e) => updateFilters({locationQuery: e.target.value})} 
+      placeholder="Search Location" />
       </div>
-      <div className="flex flex-col mr-6">
-        <p className="text-gray-700 text-sm">Keyword</p>
+      <div className="flex flex-col xl:mr-6 gap-2 px-3 w-full">
+        <p className="text-gray-400 text-sm font-[500]">Keyword</p>
         <Input value={searchQuery} onChange={(e) => {
           updateFilters({searchQuery: e.target.value})
   
