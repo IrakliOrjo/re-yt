@@ -12,9 +12,9 @@ interface IServicePlateProps {
 export const ServicePlate:FC <IServicePlateProps> = ({img,title,description}) => {
   return (
     <div className="border flex flex-col py-12 px-8 justify-center items-center text-center gap-[30px] rounded-2xl group hover:shadow-2xl 
-    transition-all duration-300 ease-in-out hover:scale-105">
+    transition-all duration-300 ease-in-out xl:hover:scale-105">
         <img src={img} alt={title} className="transform transition-all duration-500 ease-in-out group-hover:animate-rotate-y" />
-        <p className="font-[500] text-[24px]">{title}</p>
+        <p className="font-[500] xl:text-[24px] text-[18px]">{title}</p>
         <p className="max-w-[350px] text-[14px] text-gray-500">{description}</p>
         <Button 
             onClick={() => (console.log())} 

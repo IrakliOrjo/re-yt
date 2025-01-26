@@ -41,11 +41,16 @@ export default {
             transform: 'translateX(-100%)',
             opacity: '0'
           },
+        },
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-33.33%)' },
         }
       },
       animation: {
         slideInRight: 'slideInRight 0.5s ease-out forwards',
-        slideOutLeft: 'slideOutLeft 0.5s ease-out forwards'
+        slideOutLeft: 'slideOutLeft 0.5s ease-out forwards',
+        'scroll': 'scroll 5s cubic-bezier(0.4, 0, 0.2, 1) infinite',
       }
     }
   },

@@ -4,12 +4,12 @@ import { BENEFIT_BOXES } from './const';
 
 export const BenefitSection = () => {
   return (
-    <div className="min-h-screen flex px-2">
-        <img className='w-[50%] rounded-l-2xl' src={HouseInteriorImage} alt='House interior' />
-        <div className='pl-[95px] pt-[100px] w-full bg-slate-100 rounded-r-2xl'>
-            <p className="text-blue-600 text-[20px]">Our Benifit</p>
-            <h1 className="text-[36px] mb-7 font-bold text-gray-800">Why Choose Us?</h1>
-            <p className="max-w-[500px] text-[14px] text-gray-500 mb-6">Our seasoned team excels in real estate with years of successful market
+    <div className="min-h-screen flex flex-col xl:flex-row px-2">
+        <img className='xl:w-[50%] xl:rounded-l-2xl rounded-t-2xl' src={HouseInteriorImage} alt='House interior' />
+        <div className='xl:pl-[95px] px-2 xl:pt-[100px] py-14 w-full bg-slate-100 xl:rounded-r-2xl'>
+            <p className="text-blue-600 xl:text-[20px] text-[14px] font-[500] uppercase">Our Benifit</p>
+            <h1 className="xl:text-[34px] text-[1.6rem] mb-9 font-bold xl:mb7">Why Choose Us?</h1>
+            <p className="max-w-[500px]  text-gray-500 mb-6">Our seasoned team excels in real estate with years of successful market
             navigation, offering informed decisions and optimal results.</p>
             <div className='flex flex-col gap-5 items-start'>
                 {BENEFIT_BOXES.map(({icon, title, description}, index) => {

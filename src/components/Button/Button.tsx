@@ -18,7 +18,7 @@ export const Button:FC<ButtonProps> = ({ text, transparent, variant='primary', i
   if(variant === 'outlined') {
     return (<button 
               className={`text-white ${isActive ? 'bg-blue-600 border-blue-600' : 'border-white'} hover:bg-blue-600  
-              hover:text-white py-[12px] px-[55px] flex gap-2 font-[500] border hover:border-transparent rounded-full ${className}`}
+              hover:text-white py-[12px] md:px-[45px] px-[35px] lg:px-[55px] flex gap-2 font-[500] border hover:border-transparent rounded-full ${className}`}
               onClick={onClick}
              >
                 {leftIcon}

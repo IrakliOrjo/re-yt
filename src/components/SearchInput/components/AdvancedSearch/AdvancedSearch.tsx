@@ -23,16 +23,15 @@ export const AdvancedSearch:FC <IAdvancedSearchProps> = ({isOpen}) => {
     const toggleAmenity = useHouseStore(store => store.toggleAmenity);
     const updateFilters = useHouseStore(store => store.updateFilters);
 
-  
-    
 
   return (
     <div 
-        className={`h-[388px] top-24 w-full absolute bg-white rounded-xl shadow-xl transition-all duration-500 flex flex-col px-4 py-6
+        className={`xl:h-[388px] xl:top-24 top-[25.5rem] w-full absolute bg-white rounded-xl shadow-xl 
+          transition-all duration-500 flex flex-col px-4 py-6 z-10
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'} `}
          >
 
-        <div className="flex gap-24">
+        <div className="flex flex-col xl:flex-row xl:gap-24 gap-4">
             <div className="flex flex-col">
                 <p className="font-[500] text-[16px]">Full price</p>
                 <div className="flex gap-6">
@@ -48,7 +47,7 @@ export const AdvancedSearch:FC <IAdvancedSearchProps> = ({isOpen}) => {
                 </div>
             </div>
         </div>        
-        <div className="flex gap-4 mt-4">
+        <div className="flex flex-col xl:flex-row gap-4 mt-4">
           <div className="flex flex-col">
                 <p className="font-[500] text-[16px] mb-2">Rooms</p>
                 <div className="flex gap-6">
@@ -64,7 +63,7 @@ export const AdvancedSearch:FC <IAdvancedSearchProps> = ({isOpen}) => {
                 </div>
           </div>
         </div>   
-        <div className="grid grid-cols-6 mt-3">
+        <div className="grid grid-cols-2 xl:grid-cols-6 mt-3">
           {AMENITIES.map((amenity) => (<SearchCheckbox onClick={() => toggleAmenity(amenity)} key={amenity} amenitie={amenity} />))}
           
         </div>

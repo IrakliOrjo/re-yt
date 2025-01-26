@@ -1,0 +1,1 @@
+export { CompanyCarousel } from './CompanyCarousel'
