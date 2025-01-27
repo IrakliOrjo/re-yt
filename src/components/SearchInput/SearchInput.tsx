@@ -20,11 +20,11 @@ export const SearchInput = () => {
   
 
   return (
-    <div className="lg:w-[1290px] lg:h-[92px] mt-[20px] bg-white lg:rounded-full 
-    flex items-center flex-col relative rounded-2xl w-full">
-      <div className="flex flex-col xl:flex-row gap-6 items-center mb-5 xl:px-[40px] py-[20px]
+    <div className="lg:h-[92px] mt-[20px] bg-white lg:rounded-3xl 2xl:rounded-full
+    flex items-center flex-col relative rounded-2xl w-full max-w-[45rem] lg:max-w-[1280px]">
+      <div className="flex flex-col lg:flex-row gap-6 items-center mb-5 xl:px-[40px] md:border-none
       w-full px-4">
-      <div className="flex flex-col xl:border-r-2 px-3 xl:mr-4 w-full gap-2">
+      <div className="flex flex-col  xl:border-r-2 px-3 xl:mr-4 w-full gap-2">
         <p className="text-gray-400 text-sm font-[500]">Type</p>
         <HouseTypeDropdown />
       </div>
@@ -34,7 +34,7 @@ export const SearchInput = () => {
       onChange={(e) => updateFilters({locationQuery: e.target.value})} 
       placeholder="Search Location" />
       </div>
-      <div className="flex flex-col xl:mr-6 gap-2 px-3 w-full">
+      <div className="flex flex-col xl:mr-6 gap-2 px-3 w-full bg-red-500">
         <p className="text-gray-400 text-sm font-[500]">Keyword</p>
         <Input value={searchQuery} onChange={(e) => {
           updateFilters({searchQuery: e.target.value})
@@ -42,7 +42,7 @@ export const SearchInput = () => {
           }} 
           placeholder="Search Keyword" />
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-3 items-center justify-center w-full lg:w-auto">
         <Button onClick={() => setIsAdvancedSearchOpen(!isAdvancedSearchOpen)} rightIcon={<SettingsIcon viewBox="0 0 64 64"/>} transparent  text="Search Advanced" />
         <Button rightIcon={<SearchIcon strokeColor="white" viewBox="0 0 26 26" />} text="Search" />
       </div>
