@@ -5,11 +5,11 @@ import { LINKS } from "./const"
 
 export const Navbar = () => {
   return (
-    <ul className="flex sticky">
+    <ul className="lg:flex items-center sticky hidden gap-6 xl:gap-11 xl:ml-14 2xl:ml-24 transition-all ease-in-out duration-300">
                 {LINKS.map(({name,url,subLinks}) => (
                     <li 
                         key={name}
-                        className="pr-[65px] relative group"
+                        className=" relative group"
                         >
                         <LandingLink to={url}>{name}</LandingLink>
                         <NavSubLinks>{subLinks.map((sublink) => {

@@ -11,13 +11,13 @@ export const HouseTypeDropdown = () => {
   const type = useHouseStore(store => store.filters.type);
 
   return (
-    <div className="relative inline-block text-left border py-1 xl:p-0 xl:border-none 
+    <div className="relative inline-block text-left border py-1 xl:p-0 lg:border-none 
     rounded-full w-full ">
   <div className="">
     <button
       onClick={() => setIsOpen(!isOpen)} 
-      className="inline-flex justify-between gap-x-1.5 rounded-md w-full px-4
-       py-2 text-md text-gray-900 xl:shadow-sm xl:font-semibold
+      className="inline-flex justify-between gap-x-1.5 rounded-md w-full px-4 lg:px-2 xl:px-0
+       py-2 text-md text-gray-900 xl:shadow-none 
         ">
       {type}
       <svg className="-mr-1 size-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -30,7 +30,7 @@ export const HouseTypeDropdown = () => {
   origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none`} >
     <div onClick={() => setIsOpen(!isOpen)}  className="py-1" role="none">
  
-      <SelectOption  houseType={'All'} />
+      <SelectOption houseType={'All'} />
       <SelectOption  houseType={'House'} />
       <SelectOption houseType={'Apartment'} />
     </div>
