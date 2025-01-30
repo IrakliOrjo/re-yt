@@ -34,7 +34,7 @@ export const HouseCard:FC <HouseCardProps> = ({
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-gray-300">
         <div className="relative rounded-t-xl group overflow-hidden">
-        <img className="xl:w-[408px] w-full min-h-[270px] rounded-t-xl transition-transform duration-300 group-hover:scale-110" src={image} alt={title} />
+        <img className="  w-full min-h-[270px] rounded-t-xl transition-transform duration-300 group-hover:scale-110" src={image} alt={title} />
         <div className="absolute inset-0 bg-gradient-to-t rounded-t-xl  from-black/50 to-transparent pointer-events-none"></div>
         <div className="absolute top-4 left-4 bg-gray-500 rounded-full px-2 ">
           <span className="text-[14px] text-white cursor-pointer">{status}</span>
