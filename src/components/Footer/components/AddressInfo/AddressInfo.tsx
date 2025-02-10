@@ -6,8 +6,8 @@ import { PhoneIcon } from "../../../../assets/icons/PhoneIcon"
 
 export const AddressInfo = () => {
   return (
-    <div className="flex flex-col xl:px-72 px-5 py-[50px] ">
-        <div className="flex flex-col xl:flex-row w-full justify-between">
+    <div className="flex flex-col xl:px-20 px-4 py-[50px] ">
+        <div className="grid grid-cols-2 gap-6 lg:flex w-full justify-between">
         <div className="flex flex-col gap-2">
             <p className="max-w-[300px] text-[14px] text-gray-400"
             >Specializes in providing high-class tours for those in need. Contact Us</p>
@@ -24,7 +24,7 @@ export const AddressInfo = () => {
                 <p className="text-slate-100 text-[14px]">luxuryestate@gmail.com</p>
             </div>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 ">
             <p className="font-[500] text-white ">Categories</p>
             <ul className="text-gray-400 flex flex-col gap-1 text-[14px]">
                 <li>Pricing Plans</li>

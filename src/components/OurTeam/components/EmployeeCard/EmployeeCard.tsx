@@ -25,7 +25,7 @@ export const EmployeeCard:FC<IEmployeeCardProps> = ({image,employeeName,position
         <div className="overflow-hidden rounded-2xl relative">
             <img className="rounded-2xl w-full  group-hover:scale-105 aspect-square transition-transform duration-700 ease-in" 
             src={image} alt={employeeName} />
-            <div className="absolute xl:max-w-[200px]  inset-x-0 mx-auto bottom-4 flex 
+            <div className="absolute lg:max-w-[200px]  inset-x-0 mx-auto bottom-4 flex 
             justify-between items-center max-w-[350px]
             rounded-xl bg-black/20  backdrop-blur-md h-[42px] xl:px-3 opacity-0 
             group-hover:opacity-100 transition-all duration-500 ease-in-out 

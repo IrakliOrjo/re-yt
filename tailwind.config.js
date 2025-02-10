@@ -4,6 +4,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      screens: {
+
+        'mini-md': '580px',
+      },
       backgroundImage: {
         "hero-bg": "url('/public/wallpaper1.jpg')",
         "newyork-bg": "url('/public/newyork.jpg')",

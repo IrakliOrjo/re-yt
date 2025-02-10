@@ -20,8 +20,8 @@ export const ServicePlate:FC <IServicePlateProps> = ({img,title,description}) =>
             onClick={() => (console.log())} 
             rightIcon={<ArrowRightIcon strokeColor="black" fill="black" className="group-hover:stroke-white group-hover:fill-white"/>} 
             transparent  
-            text="Search Advanced" 
-            className="group-hover:px-[35px] group-hover:bg-blue-700 group-hover:text-white transition-all duration-300 ease-in-out"
+            text="Learn More" 
+            className="group-hover:bg-blue-700 group-hover:text-white transition-all duration-300 ease-in-out"
             />
     </div>
   )
