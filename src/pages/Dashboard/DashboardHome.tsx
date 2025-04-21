@@ -1,5 +1,3 @@
-// src/pages/dashboard/DashboardHome.jsx
-import React from 'react';
 import { Row, Col, Card, Statistic, Table, Typography, Tag } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined, HomeOutlined, UserOutlined, EyeOutlined, CommentOutlined } from '@ant-design/icons';
 

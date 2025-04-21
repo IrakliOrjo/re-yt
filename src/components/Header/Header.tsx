@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { DocumentsIcon } from "../../assets/icons/DocumentsIcon"
-import { LoginIcon } from "../../assets/icons/LoginIcon"
+import { useEffect, useState } from "react";
 import { Button } from "../Button"
 import { Navbar } from "./components/Navbar"
-import { ChevronRight, CircleUserRound, Files, Mail, Menu, PhoneIcon, User, X } from 'lucide-react';
+import { ChevronRight,  Files, Mail, Menu, PhoneIcon, User, X } from 'lucide-react';
 import { LINKS } from "./components/Navbar/const";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/AuthContext";
  
 
 
@@ -17,6 +17,27 @@ export const Header = () => {
     setExpandIndex(expandIndex === index ? null : index)
   }
 
+  const { currentUser, isWhitelisted, whitelistLoading, signInWithGoogle } = useAuth();
+  const [error, setError] = useState<null | string>(null);
+  const navigate = useNavigate();
+
+  // Redirect if user is logged in AND whitelisted
+
+
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    try {
+      await signInWithGoogle();
+      if (currentUser && isWhitelisted) {
+        navigate('/dashboard');
+      }
+
+      // The redirect will happen automatically if user is whitelisted
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      setError("Failed to sign in with Google. Please try again.");
+    }
+  };
   
 
   return (
@@ -28,7 +49,7 @@ export const Header = () => {
             <Navbar />
         </div>
         <div className="gap-[16px] flex ">
-            <Button className="md:flex hidden" leftIcon={<User />} text="Sign In" transparent />
+            <Button onClick={handleGoogleSignIn} className="md:flex hidden" leftIcon={<User />} text="Sign In" transparent />
             <Button className="lg:flex hidden" leftIcon={<Files />} text="Submit Property" />
         </div>
         <button 
