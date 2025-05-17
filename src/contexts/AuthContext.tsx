@@ -11,7 +11,6 @@ import {
   
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
-import {  useNavigate } from 'react-router';
 
 interface AuthContextType {
   currentUser: User | null;
@@ -44,24 +43,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isWhitelisted, setIsWhitelisted] = useState(false);
   const [whitelistLoading, setWhitelistLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const handleRedirectResult = async () => {
       try {
-        console.log("Checking for redirect result...");
         const result = await getRedirectResult(auth);
         
         if (result && result.user) {
-          console.log("User returned from redirect:", result.user.email);
-          // Refresh token and check if whitelisted
-          await refreshToken(result.user);
+          // User successfully authenticated
           if (result.user.email) {
-            await checkWhitelisted(result.user.email);
+            const isUserWhitelisted = await checkWhitelisted(result.user.email);
+            if (isUserWhitelisted) {
+              window.location.href = '/dashboard'; // Use window.location since useNavigate isn't available
+            }
           }
-          
-          // Navigate to dashboard after successful authentication
-          navigate('/dashboard');
         }
       } catch (error) {
         console.error("Error handling redirect result:", error);
@@ -69,7 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
     
     handleRedirectResult();
-  }, [navigate]);
+  }, []);
   
   // Check if the user's email is whitelisted
   const checkWhitelisted = async (email: string) => {

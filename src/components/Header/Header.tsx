@@ -26,13 +26,11 @@ export const Header = () => {
   const handleGoogleSignIn = async () => {
     try {
       if (currentUser && isWhitelisted) {
-        navigate('/dashboard');
-      }else{
-
-        await signInWithGoogle();
+        navigate('/dashboard'); // This works for already logged-in users
+      } else {
+        await signInWithGoogle(); // This redirects to Google
+        // Code here won't execute until after returning from redirect
       }
-
-      // The redirect will happen automatically if user is whitelisted
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
