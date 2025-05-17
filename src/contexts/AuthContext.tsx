@@ -4,9 +4,10 @@ import {
   User, 
   UserCredential, 
   onAuthStateChanged, 
-  signInWithPopup, 
   signOut,
-  getIdToken 
+  getIdToken, 
+  signInWithRedirect,
+  
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
 
@@ -17,6 +18,7 @@ interface AuthContextType {
   whitelistLoading: boolean;
   signInWithGoogle: () => Promise<UserCredential>;
   logout: () => Promise<void>;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -75,17 +77,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Sign in with Google
   const signInWithGoogle = async (): Promise<UserCredential> => {
-    const result = await signInWithPopup(auth, googleProvider);
-    
-    if (result.user) {
-      await refreshToken(result.user);
-      if (result.user.email) {
-        await checkWhitelisted(result.user.email);
-      }
+    try {
+      await signInWithRedirect(auth, googleProvider);
+      
+      return {} as UserCredential;
+    } catch (error) {
+      console.error("Error during redirect:", error);
+      throw error;
     }
-    
-    return result;
   };
+ 
 
   // Sign out
   const logout = (): Promise<void> => {
@@ -136,7 +137,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isWhitelisted,
     whitelistLoading,
     signInWithGoogle,
-    logout
+    logout,
+    isLoading: loading // Expose loading state to components
   };
 
   return (

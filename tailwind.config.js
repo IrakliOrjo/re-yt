@@ -9,14 +9,14 @@ export default {
         'mini-md': '580px',
       },
       backgroundImage: {
-        "hero-bg": "url('/public/wallpaper1.jpg')",
-        "newyork-bg": "url('/public/newyork.jpg')",
-        "la-bg": "url('/public/la.jpg')",
-        "san-francisco-bg": "url('/public/san-francisco.jpg')",
-        "chicago-bg": "url('/public/chicago.jpg')",
-        "miami-bg": "url('/public/miami.jpg')",
-        "las-vegas-bg": "url('/public/las-vegas.jpg')",
-        "detroit-bg": "url('/public/detroit.jpg')",
+        "hero-bg": "url('/wallpaper1.jpg')",
+        "newyork-bg": "url('/newyork.jpg')",
+        "la-bg": "url('/la.jpg')",
+        "san-francisco-bg": "url('/san-francisco.jpg')",
+        "chicago-bg": "url('/chicago.jpg')",
+        "miami-bg": "url('/miami.jpg')",
+        "las-vegas-bg": "url('/las-vegas.jpg')",
+        "detroit-bg": "url('/detroit.jpg')",
       },
       fontFamily: {
         // Primary font: DM Sans - clean, modern, highly readable

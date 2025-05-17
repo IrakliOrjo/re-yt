@@ -13,39 +13,73 @@ interface ApiError {
 }
 
 export async function fetchWithAuth<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  
-  if (!user) {
-    throw new Error('User not authenticated');
-  }
-  
-  const token = await user.getIdToken();
-  
-  const defaultOptions: ApiOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+  try {
+    const auth = getAuth();
+    
+    // Check if we're still initializing auth
+    if (!auth.currentUser) {
+      console.log('No user found, waiting for auth state to settle...');
+      
+      // Give the auth state a moment to settle if the page just loaded
+      // This is useful after a redirect
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
-  };
-  
-  const mergedOptions: ApiOptions = {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers
+    
+    const user = auth.currentUser;
+    
+    console.log('Auth state during API call:', user ? `User: ${user.email}` : 'No user');
+    
+    if (!user) {
+      console.error('API call attempted without authenticated user');
+      throw new Error('User not authenticated');
     }
-  };
-  console.log('fetching',API_BASE_URL)
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, mergedOptions);
-  
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({} as ApiError));
-    throw new Error(errorData.message || errorData.error || `API request failed with status ${response.status}`);
+    
+    try {
+      const token = await user.getIdToken(true);
+      
+      const defaultOptions: ApiOptions = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      
+      const mergedOptions: ApiOptions = {
+        ...defaultOptions,
+        ...options,
+        headers: {
+          ...defaultOptions.headers,
+          ...options.headers
+        }
+      };
+      
+      console.log(`Fetching from: ${API_BASE_URL}${endpoint}`);
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, mergedOptions);
+      
+      if (!response.ok) {
+        console.error(`API error (${response.status}):`, response.statusText);
+        
+        // Try to get error details from response
+        let errorData: ApiError = {};
+        try {
+          errorData = await response.json();
+        } catch (e) {
+          console.error('Failed to parse error response:', e);
+        }
+        
+        throw new Error(errorData.message || errorData.error || `API request failed with status ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data as T;
+    } catch (error) {
+      console.error('Token or fetch error:', error);
+      throw error;
+    }
+  } catch (error) {
+    console.error('Fetch with auth error:', error);
+    throw error;
   }
-  
-  return response.json() as Promise<T>;
 }
 
 // Example API functions with type safety
