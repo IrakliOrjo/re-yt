@@ -1,35 +1,125 @@
 import { create } from 'zustand'
-import { House, HouseFilters, HouseStore } from '../types/houses';
-import { houses as initialHouses } from '../const/houses';
+import {  HouseFilters, HouseStore } from '../types/houses';
+import { getAllProperties, getPropertyById, searchProperties } from '../services/api';
 
 const initialFilters: HouseFilters = {
   minPrice: undefined,
   maxPrice: undefined,
   bedrooms: undefined,
   bathrooms: undefined,
-  type: 'All',
+  type: 'all',
+  status: 'Sale',
   city: undefined,
   minArea: undefined,
   maxArea: undefined,
   amenities: undefined,
   searchQuery: undefined,
-  locationQuery: ''
+  locationQuery: '',
 };
 
 const useHouseStore = create<HouseStore>((set, get) => ({
-  houses: initialHouses as House[],
-  filteredHouses: initialHouses as House[],
+  houses: [],
+  filteredHouses: [],
   filters: initialFilters,
+  currentHouse: null,
   loading: false,
+  status: 'sale',
   error: null,
+
+  fetchHouses: async () => {
+    set({ loading: true, error: null });
+    try {
+      const fetched = await getAllProperties();
+      // If needed, map API fields to match your local structure
+      const houses = fetched;
+
+      set({
+        houses,
+        loading: false
+      });
+
+      const currentFilters = get().filters
+      get().updateFilters(currentFilters)
+
+    } catch (error: any) {
+      set({
+        error: error.message || 'Failed to fetch houses',
+        loading: false
+      });
+    }
+  },
+  searchPropertiesAPI: async () => {
+    set({loading:true, error:null})
+    try {
+      const currentFilters = get().filters
+      const apiFilters = {
+        type: currentFilters.type !== 'all' ? currentFilters.type : undefined,
+        minprice: currentFilters.minPrice,
+        maxPrice: currentFilters.maxPrice,
+        minBedrooms: currentFilters.bedrooms,
+        minBathrooms: currentFilters.bathrooms,
+        keyWord: currentFilters.searchQuery ?? currentFilters.locationQuery
+      }
+
+      const results = await searchProperties(apiFilters)
+
+      set({
+        houses:results,
+        filteredHouses: results,
+        loading:false
+      })
+    }catch(error) {
+      let errorMessage = ' Failed to search properties'
+
+      if(error instanceof Error) {
+        errorMessage = error.message
+      }
+
+      set({
+        error: errorMessage,
+        loading: false
+      })
+    }
+  },
+
+  fetchHouseById: async (id:string) => {
+    set({ loading: true, error: null });
+    try {
+      const fetched = await getPropertyById(id);
+      const house = fetched;
+      
+      if (!house) throw new Error('House not found');
+      set({ currentHouse: house, loading: false });
+    } catch (error: any) {
+      set({
+        error: error.message || 'Failed to fetch house',
+        loading: false
+      });
+    }
+  },
 
   updateFilters: (filterUpdate: Partial<HouseFilters>) => {
     const currentState = get();
+    console.log('before filtering', currentState.houses.length)
+    console.log('current filters before update', currentState.filters)
+    console.log('filter update:', filterUpdate)
+
     const newFilters = { ...currentState.filters, ...filterUpdate };
     
     let filtered = currentState.houses;
 
+    console.log('Houses with status', currentState.houses.map(house => ({
+      id: house.id,
+      title:house.title,
+      status:house.status
+    })))
+
     // Apply numeric range filters
+    if(newFilters.status) {
+      console.log('filtered by status,', newFilters.status)
+      filtered = filtered.filter(house => house.status === newFilters.status)
+      console.log('filtered after status filter', filtered)
+    }
     if (newFilters.minPrice !== undefined && newFilters.minPrice !== '') {
       const minPriceNum = Number(newFilters.minPrice);
       if (!isNaN(minPriceNum)) {
@@ -45,13 +135,13 @@ const useHouseStore = create<HouseStore>((set, get) => ({
     if (newFilters.minArea !== undefined && newFilters.minArea !== '') {
       const minAreaNum = Number(newFilters.minArea);
       if (!isNaN(minAreaNum)) {
-        filtered = filtered.filter(house => house.area >= minAreaNum);
+        filtered = filtered.filter(house => Number(house.surface) >= minAreaNum);
       }
     }
     if (newFilters.maxArea !== undefined && newFilters.maxArea !== '') {
       const maxAreaNum = Number(newFilters.maxArea);
       if (!isNaN(maxAreaNum)) {
-        filtered = filtered.filter(house => house.area <= maxAreaNum);
+        filtered = filtered.filter(house => Number(house.surface) <= maxAreaNum);
       }
     }
 
@@ -64,7 +154,7 @@ const useHouseStore = create<HouseStore>((set, get) => ({
     }
     if (newFilters.type !== undefined) {
       filtered = filtered.filter(house => {
-        if(newFilters.type === 'All') return true;
+        if(newFilters.type === 'all') return true;
         if(house.type === newFilters.type) return true;
       });
     }
@@ -72,26 +162,24 @@ const useHouseStore = create<HouseStore>((set, get) => ({
     // Apply city filter
     if (newFilters.city) {
       filtered = filtered.filter(house => 
-        house.city.toLowerCase().includes(newFilters.city!.toLowerCase())
+        house.address.toLowerCase().includes(newFilters.city!.toLowerCase())
       );
     }
 
     // Apply amenities filter
-    if (newFilters.amenities && newFilters.amenities.length > 0) {
+  /*   if (newFilters.amenities && newFilters.amenities.length > 0) {
       console.log('newFilters.amenities', newFilters.amenities);
       filtered = filtered.filter(house => 
         
         newFilters.amenities!.some(amenity => 
         {
-          console.log('amenity', amenity);
-          console.log('house.amenities', house.amenities);
-          console.log('house.amenities.includes(amenity)', house.amenities.includes(amenity));
+ 
 
           return house.amenities.includes(amenity)
         }
         )
       );
-    }
+    } */
 
     // Apply search query
     if (newFilters.searchQuery) {
@@ -105,9 +193,9 @@ const useHouseStore = create<HouseStore>((set, get) => ({
     if (newFilters.locationQuery) {
       const query = newFilters.locationQuery.toLowerCase();
       filtered = filtered.filter(house =>
-        house.city.toLowerCase().includes(query) ||
-        house.street.toLowerCase().includes(query) ||
-        house.district.toLowerCase().includes(query)
+        house.address.toLowerCase().includes(query) ||
+        house.address.toLowerCase().includes(query) ||
+        house.address.toLowerCase().includes(query)
       );
     }
     

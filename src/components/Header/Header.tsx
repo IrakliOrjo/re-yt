@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Button } from "../Button"
 import { Navbar } from "./components/Navbar"
 import { ChevronRight,  Files, Mail, Menu, PhoneIcon, User, X } from 'lucide-react';
 import { LINKS } from "./components/Navbar/const";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
  
 
@@ -17,15 +17,13 @@ export const Header = () => {
     setExpandIndex(expandIndex === index ? null : index)
   }
 
-  const { currentUser, isWhitelisted, whitelistLoading, signInWithGoogle } = useAuth();
-  const [error, setError] = useState<null | string>(null);
+  const { currentUser, isWhitelisted,  signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if user is logged in AND whitelisted
 
 
   const handleGoogleSignIn = async () => {
-    setError(null);
     try {
       await signInWithGoogle();
       if (currentUser && isWhitelisted) {
@@ -35,7 +33,6 @@ export const Header = () => {
       // The redirect will happen automatically if user is whitelisted
     } catch (error) {
       console.error("Error signing in with Google:", error);
-      setError("Failed to sign in with Google. Please try again.");
     }
   };
   
@@ -45,7 +42,9 @@ export const Header = () => {
     items-center gap-12 lg:px-[4rem] px-5  border w-full z-50">
        <div className="flex justify-between w-full items-center gap-4">
         <div className="flex gap-6">
+          <Link to="/">
             <h1 className="font-bold">Company Logo</h1>
+          </Link>
             <Navbar />
         </div>
         <div className="gap-[16px] flex ">

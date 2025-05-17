@@ -1,7 +1,7 @@
 // src/pages/dashboard/DashboardLayout.jsx
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, theme, Typography, Avatar, Dropdown } from 'antd';
+import { Layout, Menu, theme,  Avatar, Dropdown, MenuProps } from 'antd';
 import {
   DashboardOutlined,
   HomeOutlined,
@@ -13,7 +13,7 @@ import {
 } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
-const { Title } = Typography;
+ 
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -49,7 +49,7 @@ const DashboardLayout = () => {
   ];
   
   // User dropdown menu
-  const userMenuItems = [
+  const userMenuItems: MenuProps['items'] = [
     {
       key: '1',
       label: 'Profile',

@@ -6,18 +6,22 @@ import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
  
 import 'swiper/swiper-bundle.css';
 import './Locations.css'
+import { FadeInOnScroll } from '../FadeInOnScroll';
  
  
 export const Locations = () => {
 
  
   return (
-    <div className="flex flex-col justify-center items-center py-20">
+    <div className="flex flex-col justify-center items-center py-14">
         <p className="text-blue-600 text-[20px]">Explore Cities</p>
-        <h1 className="text-[34px] mb-9 font-bold">Our Location For You</h1>
+        <FadeInOnScroll delay={0.3} className='flex justify-center'>
+          <h1 className="text-[34px] mb-9 font-bold">Our Location For You</h1>
+        </FadeInOnScroll>
         <div className="flex w-full py-6 px-2 ">
-        <Swiper
-  
+        
+
+          <Swiper
           modules={[Navigation, Pagination, Scrollbar, A11y]}
           spaceBetween={10}
           slidesPerView={6}
@@ -49,16 +53,19 @@ export const Locations = () => {
           }}
           onSwiper={(swiper) => console.log(swiper)}
           onSlideChange={() => console.log('slide change')}
-        >
+          >
          {CITYS.map(({img,title},index) => {
-                    return ( 
-                        <SwiperSlide key={title} >
-                            <LocationPlate image={img} location={title} index={index} />
-                        </SwiperSlide>
+           return ( 
+             <SwiperSlide key={title} >
+              <FadeInOnScroll className='flex justify-center' delay={index * 0.2}>
+               <LocationPlate image={img} location={title} index={index} />
+              </FadeInOnScroll>
+             </SwiperSlide>
                )
-                })}
+              })}
                 <div className="swiper-custom-pagination absolute bottom-0 w-full flex justify-center gap-2 mt-14" />
-    </Swiper>          
+          </Swiper>          
+        
          
         <div>
              

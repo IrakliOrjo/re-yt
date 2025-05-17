@@ -7,6 +7,7 @@ import PropertiesManagement from './pages/Dashboard/PropertiesManagment'
 import { AuthProvider } from './contexts/AuthContext'
 import LoginPage from './pages/LoginPage/LoginPage'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
+import PropertyDetails from './components/PropertyDetails/PropertyDetails'
 
 function App() {
  
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />

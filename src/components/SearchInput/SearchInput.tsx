@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { SearchIcon } from "../../assets/icons/SearchIcon"
-import { SettingsIcon } from "../../assets/icons/SettingsIcons"
 import useHouseStore from "../../store/houseStore"
 import { Button } from "../Button"
 import { HouseTypeDropdown } from "./components/HouseTypeDropdown"
 import { Input } from "./components/Input"
 import { AdvancedSearch } from "./components/AdvancedSearch"
+import { Settings } from "lucide-react"
 
 
 export const SearchInput = () => {
@@ -16,8 +16,17 @@ export const SearchInput = () => {
   const updateFilters = useHouseStore(store => store.updateFilters)
   const locationQuery = useHouseStore(store => store.filters.locationQuery)
   const searchQuery = useHouseStore(store => store.filters.searchQuery)
+  const searchPropertiesAPI = useHouseStore(state => state.searchPropertiesAPI)
+  const type = useHouseStore(store => store.filters.type)
+
+  const handleSearch = () => {
+    searchPropertiesAPI()
+  }
+
  
-  
+  const handleTypeChange = (newType: 'house' | 'appartment' | 'all') => {
+    updateFilters({type: newType})
+  }
 
   return (
     <div className="lg:h-[92px] mt-[20px] bg-white lg:rounded-3xl 2xl:rounded-full py-4
@@ -26,7 +35,10 @@ export const SearchInput = () => {
       w-full px-4">
       <div className="flex flex-col  xl:border-r-2 px-3 xl:mr-4 w-full gap-2">
         <p className="text-gray-400 text-sm font-[500]">Type</p>
-        <HouseTypeDropdown />
+        <HouseTypeDropdown
+          selectedType={type}
+          onChange={handleTypeChange}
+          />
       </div>
       <div className="flex flex-col xl:border-r-2 px-3 xl:mr-6 w-full gap-2">
         <p className="text-gray-400 text-sm font-[500]">Location</p>
@@ -45,12 +57,12 @@ export const SearchInput = () => {
       <div className="flex gap-3 items-center justify-center w-full lg:w-auto">
         <Button 
         onClick={() => setIsAdvancedSearchOpen(!isAdvancedSearchOpen)} 
-        rightIcon={<SettingsIcon viewBox="0 0 64 64"/>} 
+        rightIcon={<Settings />} 
         transparent  
         text="Search Advanced" 
-        className="min-w-[13rem]"
+        className="min-w-[14rem]"
         />
-        <Button rightIcon={<SearchIcon strokeColor="white" viewBox="0 0 26 26" />} text="Search" />
+        <Button rightIcon={<SearchIcon strokeColor="white" viewBox="0 0 26 26" />} text="Search" onClick={handleSearch} />
       </div>
 
       </div>

@@ -1,59 +1,38 @@
-export interface House {
-    id: number;
-    title: string;
-    city: string;
-    district: string;
-    street: string;
-    price: number;
-    type: 'House' | 'Apartment';
-    bedrooms: number;
-    bathrooms: number;
-    area: number;
-    image: string[];
-    description: string;
-    garage: number;
-    parkingSpace: boolean;
-    pool: boolean;
-    security: boolean;
-    yearBuilt: number;
-    status: string;
-    amenities: string[];
-    mapCoordinates: string;
-    contactNumber: string;
-    email: string;
-    agentId: string;
-    listingDate: string;
-    floor: string;
-    heatingType: string;
-    AC: boolean;
-    furnished: boolean;
-    petFriendly: boolean;
-    renovation: string;
-  }
+import { Property } from "../services/api";
+
+
 
   export interface HouseStore {
-    houses: House[];
-    filteredHouses: House[];
+    houses: Property[];
+    filteredHouses: Property[];
     filters: HouseFilters;
     loading: boolean;
     error: null | string;
+    currentHouse: Property | null;
     updateFilters: (filterUpdate: Partial<HouseFilters>) => void;
+    fetchHouseById: (id: string) => Promise<void>;
     toggleAmenity: (amenity: string) => void;
     clearFilters: () => void;
     setLoading: (loading: boolean) => void;
     setError: (error: string | null) => void;
+    fetchHouses: () => Promise<void>;
+    searchPropertiesAPI: () => Promise<void>
   }
+
+  export type HouseType = 'house' | 'appartment' | 'all'
 
   export interface HouseFilters {
     minPrice?: number | string;
     maxPrice?: number | string;
     bedrooms?: number | string;
     bathrooms?: number | string;
-    type?: 'House' | 'Apartment' | 'All';
+    type: HouseType;
     city?: string;
     minArea?: number | string;
     maxArea?: number | string;
+    status: 'Sale' | 'Rent'
     amenities?: string[];
     searchQuery?:string
     locationQuery?:string;
+  
   }

@@ -1,6 +1,7 @@
 import { OurTeam, Services } from "../components"
 import { BenefitSection } from "../components/BenfitSection"
 import { BlogPosts } from "../components/BlogPosts"
+import { FadeInOnScroll } from "../components/FadeInOnScroll"
 import { FeaturedProperties } from "../components/FeaturedProperties/FeaturedProperties"
 import { Footer } from "../components/Footer"
 import { Header } from "../components/Header"
@@ -13,7 +14,9 @@ export const HomePage = () => {
     <>
       <Header />
       <Hero />
-      <FeaturedProperties />
+      <FadeInOnScroll delay={0.3}>
+        <FeaturedProperties />
+      </FadeInOnScroll>
       <Locations />
       <Services />
       <BenefitSection />

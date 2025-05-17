@@ -2,7 +2,7 @@ import { FC } from "react"
 import useHouseStore from "../../../../../store/houseStore"
 
 interface ISelectOptionProps {
-  houseType: 'House' | 'Apartment' | 'All'
+  houseType: 'house' | 'appartment' | 'all'
 }
 
 export const SelectOption:FC <ISelectOptionProps> = ({ houseType}) => {

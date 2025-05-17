@@ -11,7 +11,6 @@ interface LandingLinkProps {
 export const LandingLink:FC<LandingLinkProps> = ({
   children,
   to,
-  isActive,
   onClick,
   endIcon
 }) => {

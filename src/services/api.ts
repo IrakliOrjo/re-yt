@@ -1,5 +1,4 @@
-// src/services/api.ts
-import { getAuth, User } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 const API_BASE_URL = 'https://simple-api-xi-beige.vercel.app';
 
@@ -86,4 +85,113 @@ interface WhitelistResponse {
   createdAt: string;
   updatedAt: string;
 }
- 
+
+export async function addWhitelistedEmail(data: AddWhitelistRequest): Promise<WhitelistResponse> {
+  return fetchWithAuth<WhitelistResponse>('/api/whitelist', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+}
+
+// Function to get all whitelisted emails (admin only)
+export async function getAllWhitelistedEmails(): Promise<WhitelistResponse[]> {
+  return fetchWithAuth<WhitelistResponse[]>('/api/whitelist');
+}
+
+// Function to delete a whitelisted email (admin only)
+export async function removeWhitelistedEmail(email: string): Promise<{ message: string; email: string }> {
+  return fetchWithAuth<{ message: string; email: string }>(`/api/whitelist/${encodeURIComponent(email)}`, {
+    method: 'DELETE'
+  });
+}
+
+// Property Types
+export interface PropertyImage {
+  id?: number;
+  url: string;
+  is_main?: boolean;
+  display_order?: number;
+}
+
+export interface Property {
+  id?: string;
+  title: string;
+  type: string;
+  status: string;
+  description?: string;
+  address: string;
+  bedrooms: number;
+  bathrooms: number;
+  surface: number;
+  price: number;
+  featured?: boolean;
+  floor?: number;
+  total_floors?: number;
+  repair?: string;
+  balcony?: boolean;
+  toilet_count?: number;
+  heating_system?: string;
+  parking?: boolean;
+  furniture?: boolean;
+  elevator?: boolean;
+  main_image?: string; 
+  images?: PropertyImage[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+// Property API Functions
+
+// Get all properties
+export async function getAllProperties(): Promise<Property[]> {
+  return fetchWithAuth<Property[]>('/api/properties');
+}
+
+// Get a single property by ID
+export async function getPropertyById(id: string): Promise<Property> {
+  return fetchWithAuth<Property>(`/api/properties/${id}`);
+}
+
+// Create a new property
+export async function createProperty(property: Property): Promise<Property> {
+  return fetchWithAuth<Property>('/api/properties', {
+    method: 'POST',
+    body: JSON.stringify(property)
+  });
+}
+
+// Update an existing property
+export async function updateProperty(id: number, property: Property): Promise<Property> {
+  return fetchWithAuth<Property>(`/api/properties/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(property)
+  });
+}
+
+// Delete a property
+export async function deleteProperty(id: number): Promise<{ message: string; id: number }> {
+  return fetchWithAuth<{ message: string; id: number }>(`/api/properties/${id}`, {
+    method: 'DELETE'
+  });
+}
+
+// Set a specific image as the main image
+export async function setMainImage(propertyId: number, imageId: number): Promise<{ message: string }> {
+  return fetchWithAuth<{ message: string }>(`/api/properties/${propertyId}/images/${imageId}/set-main`, {
+    method: 'PATCH'
+  });
+}
+
+// Search properties with filters
+export async function searchProperties(filters: Record<string, any>): Promise<Property[]> {
+  // Convert filters to query parameters
+  const queryParams = new URLSearchParams();
+  
+  for (const [key, value] of Object.entries(filters)) {
+    if (value !== undefined && value !== null && value !== '') {
+      queryParams.append(key, value.toString());
+    }
+  }
+  
+  return fetchWithAuth<Property[]>(`/api/properties/search?${queryParams.toString()}`);
+}

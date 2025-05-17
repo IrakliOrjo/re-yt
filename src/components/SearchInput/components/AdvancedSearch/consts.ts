@@ -22,3 +22,6 @@ export const AMENITIES = [
     "Search property",
     "Construction Year"
   ] as const;
+
+export const rooms = ['1', '2', '3', '4', '5+'];
+export const bathroomsCount = ['1', '2', '3', '4+'];

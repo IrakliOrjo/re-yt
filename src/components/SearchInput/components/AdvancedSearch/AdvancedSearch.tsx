@@ -3,7 +3,7 @@ import { AmountInput } from "./components";
 import useHouseStore from "../../../../store/houseStore";
 import { SelectInput } from "./components/SelectInput/SelectInput";
 import { SearchCheckbox } from "./components/CheckBox"; 
-import { AMENITIES } from "./consts";
+import { AMENITIES, bathroomsCount, rooms } from "./consts";
 
 interface IAdvancedSearchProps {
     isOpen: boolean
@@ -20,8 +20,26 @@ export const AdvancedSearch:FC <IAdvancedSearchProps> = ({isOpen}) => {
     const maxPrice = useHouseStore(store => store.filters.maxPrice);
     const minArea = useHouseStore(store => store.filters.minArea);
     const maxArea = useHouseStore(store => store.filters.maxArea);
+    const bedrooms = useHouseStore(store => store.filters.bedrooms)
+    const bathrooms = useHouseStore(store => store.filters.bathrooms)
     const toggleAmenity = useHouseStore(store => store.toggleAmenity);
     const updateFilters = useHouseStore(store => store.updateFilters);
+
+    const handleRoomChange = (value: string | number) => {
+      if(value === '') {
+        updateFilters({bedrooms: undefined})
+      }else {
+        updateFilters({bedrooms: Number(value)})
+      }
+    }
+
+    const handleBathroomChange = (value: string | number) => {
+      if(value === '') {
+        updateFilters({bathrooms: undefined})
+      }else {
+        updateFilters({bathrooms: Number(value)})
+      }
+    }
 
 
   return (
@@ -51,14 +69,24 @@ export const AdvancedSearch:FC <IAdvancedSearchProps> = ({isOpen}) => {
           <div className="flex flex-col">
                 <p className="font-[500] text-[16px] mb-2">Rooms</p>
                 <div className="flex gap-6">
-                <SelectInput itemName="Room" />
+                <SelectInput 
+                  itemName="Room"
+                  value={bedrooms}
+                  onChange={handleRoomChange}
+                  options={rooms}
+                  />
                
                 </div>
           </div>
           <div className="flex flex-col">
                 <p className="font-[500] text-[16px] mb-2">Bathrooms</p>
                 <div className="flex gap-6">
-                <SelectInput itemName="Bathroom" />
+                <SelectInput 
+                  itemName="Bathroom"
+                  value={bathrooms}
+                  onChange={handleBathroomChange}
+                  options={bathroomsCount}
+                  />
                
                 </div>
           </div>

@@ -1,6 +1,6 @@
-import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Theme, useTheme } from "@mui/material";
-import { FC, useState } from "react";
-import { rooms } from "./consts";
+import { FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, Theme, useTheme } from "@mui/material";
+import { FC, useEffect, useState } from "react";
+
 
 
 
@@ -13,13 +13,22 @@ const MenuProps = {
       width: 250,
     },
   },
+  disableScrollLock: true,
+  anchorOrigin: {
+    vertical: 'bottom' as const, // Add type assertion
+    horizontal: 'left' as const, // Add type assertion
+  },
+  transformOrigin: {
+    vertical: 'top' as const, // Add type assertion
+    horizontal: 'left' as const, // Add type assertion
+  },
 };
 
 
 
-function getStyles(name: string, selectedNumber: string[] | string, theme: Theme) {
+function getStyles(name: string, selectedNumber: string | number | undefined, theme: Theme) {
   return {
-    fontWeight: selectedNumber.includes(name)
+    fontWeight: selectedNumber !== undefined && String(selectedNumber) === name
       ? theme.typography.fontWeightMedium
       : theme.typography.fontWeightRegular,
   };
@@ -27,21 +36,38 @@ function getStyles(name: string, selectedNumber: string[] | string, theme: Theme
 
 interface ISelectInputProps {
     itemName: string
+    value?: string | number
+    onChange?: (value: string | number) => void
+    options?: string[] | number[]
 }
 
 
-export const SelectInput:FC <ISelectInputProps> = ({itemName}) => {
+export const SelectInput:FC <ISelectInputProps> = ({
+  itemName,
+  value,
+  onChange,
+  options
+}) => {
     const theme = useTheme();
     const [selectedNumber, setSelectedNumber] = useState<string>('');
+
+    useEffect(() => {
+      if (value !== undefined) {
+        setSelectedNumber(String(value));
+      }
+    }, [value]);
   
     const handleChange = (event: SelectChangeEvent) => {
       const {
-        target: { value },
+        target: { value: newValue },
       } = event;
-      setSelectedNumber(
-        // On autofill we get a stringified value.
-        value as string
-      );
+      
+      setSelectedNumber(newValue);
+      
+      // Call the onChange prop if provided
+      if (onChange) {
+        onChange(newValue);
+      }
     };
   
     return (
@@ -68,14 +94,15 @@ export const SelectInput:FC <ISelectInputProps> = ({itemName}) => {
             onChange={handleChange}
             input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
             MenuProps={MenuProps}
+            
           >
-            {rooms?.map((room) => (
+            {options?.map((option) => (
               <MenuItem
                 key={itemName}
-                value={room}
-                style={getStyles(room, selectedNumber, theme)}
+                value={option}
+                style={getStyles(String(option), selectedNumber, theme)}
               >
-                {room}
+                {option}
               </MenuItem>
             ))}
           </Select>

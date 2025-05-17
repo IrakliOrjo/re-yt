@@ -113,7 +113,7 @@ const DashboardHome = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status) => {
+      render: (status:string) => {
         let color = 'green';
         if (status === 'Pending') {
           color = 'gold';

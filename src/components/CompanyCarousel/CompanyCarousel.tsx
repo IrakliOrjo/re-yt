@@ -5,7 +5,7 @@ export const CompanyCarousel = () => {
 
     const [isScrolling, setIsScrolling] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
-    const timeoutRef = useRef<number | null>(null);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const startScrolling = () => {
         setIsScrolling(true);

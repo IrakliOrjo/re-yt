@@ -4,8 +4,10 @@ import { BedIcon } from "../../../../assets/icons/BedIcon";
 import { BathIcon } from "../../../../assets/icons/BathIcon";
 import { AreaIcon } from "../../../../assets/icons/AreaIcon";
 import { formatNumber } from "../../../../helpers/formatNumber";
+import { Link } from "react-router";
 
 interface HouseCardProps {
+    id: string;
     image: string;
     status: string;
     city: string;
@@ -16,10 +18,10 @@ interface HouseCardProps {
     bedrooms: number;
     bathrooms: number;
     area:number;
-    agentId: string;
 }
 
 export const HouseCard:FC <HouseCardProps> = ({
+    id,
     image,
     status,
     city,
@@ -30,9 +32,9 @@ export const HouseCard:FC <HouseCardProps> = ({
     bedrooms,
     bathrooms,
     area,
-    agentId,}) => {
+    }) => {
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-gray-300">
+    <Link to={`/property/${id}`} className="flex flex-col gap-4 rounded-xl border border-gray-300">
         <div className="relative rounded-t-xl group overflow-hidden">
           <div className="aspect-video overflow-hidden">
 
@@ -73,12 +75,12 @@ export const HouseCard:FC <HouseCardProps> = ({
         <div className="flex justify-between mt-5 pb-5">
           <div className="flex items-center gap-4">
             <div className="rounded-full bg-black h-[40px] w-[40px]"></div>
-            <p className="xl:text-[16px] text-[14px]">{agentId}</p>
+            <p className="xl:text-[16px] text-[14px]">Agent</p>
           </div>
           <p className="font-[500]">${formatNumber(price)}</p>
         </div>
         </div>
-    </div>
+    </Link>
   )
 }
 
