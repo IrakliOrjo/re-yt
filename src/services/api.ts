@@ -221,7 +221,7 @@ export interface Property {
 // Get all properties
 export async function getAllProperties(): Promise<Property[]> {
   try {
-    return await fetchPublic<Property[]>('/api/public/properties');
+    return await fetchPublic<Property[]>('/api/properties');
   } catch (error) {
     console.error('Error getting properties:', error);
     return []; // Return empty array on error to prevent UI errors
@@ -230,7 +230,7 @@ export async function getAllProperties(): Promise<Property[]> {
 
 // Get a single property by ID
 export async function getPropertyById(id: string): Promise<Property> {
-  return fetchPublic<Property>(`/api/public/properties/${id}`);
+  return fetchPublic<Property>(`/api/properties/${id}`);
 }
 
 // Create a new property
