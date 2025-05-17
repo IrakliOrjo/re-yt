@@ -12,6 +12,48 @@ interface ApiError {
   statusCode?: number;
 }
 
+export async function fetchPublic<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
+  try {
+    const defaultOptions: ApiOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+    
+    const mergedOptions: ApiOptions = {
+      ...defaultOptions,
+      ...options,
+      headers: {
+        ...defaultOptions.headers,
+        ...options.headers
+      }
+    };
+    
+    console.log(`Fetching public data from: ${API_BASE_URL}${endpoint}`);
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, mergedOptions);
+    
+    if (!response.ok) {
+      console.error(`API error (${response.status}):`, response.statusText);
+      
+      // Try to get error details from response
+      let errorData: ApiError = {};
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        console.error('Failed to parse error response:', e);
+      }
+      
+      throw new Error(errorData.message || errorData.error || `API request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data as T;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
+  }
+}
+
 export async function fetchWithAuth<T>(endpoint: string, options: ApiOptions = {}): Promise<T> {
   try {
     const auth = getAuth();
@@ -178,12 +220,17 @@ export interface Property {
 
 // Get all properties
 export async function getAllProperties(): Promise<Property[]> {
-  return fetchWithAuth<Property[]>('/api/properties');
+  try {
+    return await fetchPublic<Property[]>('/api/public/properties');
+  } catch (error) {
+    console.error('Error getting properties:', error);
+    return []; // Return empty array on error to prevent UI errors
+  }
 }
 
 // Get a single property by ID
 export async function getPropertyById(id: string): Promise<Property> {
-  return fetchWithAuth<Property>(`/api/properties/${id}`);
+  return fetchPublic<Property>(`/api/public/properties/${id}`);
 }
 
 // Create a new property
