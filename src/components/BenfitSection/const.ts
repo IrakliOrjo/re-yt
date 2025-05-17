@@ -1,6 +1,6 @@
 import CheckListIcon from '../../assets/images/ChecklistIcon.svg';
-import PartnerShipIcon from '../../assets/images/PartnershipIcon.svg';
-import ConfigurationIcon from '../../assets/images/ConfigurationIcon.svg';
+import PartnerShipIcon from '../../assets/images/partnershipIcon.svg';
+import ConfigurationIcon from '../../assets/images/configurationIcon.svg';
 
 
 export const BENEFIT_BOXES = [
