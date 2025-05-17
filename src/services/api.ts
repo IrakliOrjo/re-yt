@@ -37,7 +37,7 @@ export async function fetchWithAuth<T>(endpoint: string, options: ApiOptions = {
       ...options.headers
     }
   };
-  
+  console.log('fetching',API_BASE_URL)
   const response = await fetch(`${API_BASE_URL}${endpoint}`, mergedOptions);
   
   if (!response.ok) {
