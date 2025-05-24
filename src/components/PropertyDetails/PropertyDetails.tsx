@@ -1,10 +1,10 @@
-import  { useEffect } from 'react';
+import  { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useHouseStore from '../../store/houseStore';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 import { FeaturesComponent, PropertyDetail } from './components';
-import { Bath, BedSingle, House, LandPlot, MapPin, Ruler } from 'lucide-react';
+import { Bath, BedSingle, House, LandPlot, MapPin, Ruler, X } from 'lucide-react';
 import { Skeleton } from 'antd';
 
 import 'swiper/swiper-bundle.css';
@@ -20,6 +20,9 @@ const PropertyDetails = () => {
   const loading = useHouseStore(state => state.loading);
   const error = useHouseStore(state => state.error);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -31,6 +34,16 @@ const PropertyDetails = () => {
         fetchHouseById(id);
     }
   }, [id, fetchHouseById]);
+
+  const handleImageClick = (imageUrl:string) => {
+    setSelectedImage(imageUrl);
+    setModalVisible(true);
+  };
+
+  // Handle modal close
+  const handleModalClose = () => {
+    setModalVisible(false);
+  };
 
   console.log('currentHouse', currentHouse);
 
@@ -73,7 +86,7 @@ const PropertyDetails = () => {
           
           {/* Images Swiper Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
-            {[...Array(1)].map((_, index) => (
+            {currentHouse?.images && currentHouse.images.map((_, index) => (
               <div key={index} className="w-full max-w-xs">
                 <Skeleton.Image active style={{ width: '100%', height: 400 }} />
               </div>
@@ -83,7 +96,7 @@ const PropertyDetails = () => {
           {/* Description Skeleton */}
           <div className="mb-6">
             <Skeleton.Input active size="default" style={{ width: 150, marginBottom: 10 }} />
-            <Skeleton active paragraph={{ rows: 3 }} />
+  
           </div>
           
           {/* Property Details Skeleton */}
@@ -189,61 +202,72 @@ const PropertyDetails = () => {
         </div>
         </div>
         {/* Images Swiper */}
-        <Swiper
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            spaceBetween={10}
-            slidesPerView={6}
-            breakpoints={{
-              // when window width is >= 320px
-              320: {
-                slidesPerView: 1,
-                centeredSlides: true,
-              },
-              // when window width is >= 768px
-              768: {
-                slidesPerView: 2,
-              },
-              // when window width is >= 1024px
-              1024: {
-                slidesPerView: 3,
-                centeredSlides: false,
-              },
-              1280: {
-                slidesPerView: 'auto',
-                centeredSlides: false,
-              }
-            }} 
-            pagination={{ 
-              clickable: true,
-              el: '.swiper-custom-pagination',
-              bulletClass: 'swiper-custom-bullet',
-              bulletActiveClass: 'swiper-custom-bullet-active',
-            }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
-        >
-            {currentHouse.images && currentHouse.images.map((image, index) => (
-                <SwiperSlide key={index} className='max-w-xs'>
-                    {/* <LocationPlate image={image.url}  index={index} /> */}
+        <div className="w-full  flex justify-center  px-0 mb-12">
+          {/* Swiper container with full-width styling */}
+          <div className="w-full">
+            <Swiper
+              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              spaceBetween={10}
+              slidesPerView="auto"
+              navigation
+              pagination={{ 
+                clickable: true,
+                el: '.swiper-custom-pagination',
+                bulletClass: 'swiper-custom-bullet',
+                bulletActiveClass: 'swiper-custom-bullet-active',
+              }}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                  spaceBetween: 0,
+                },
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1024: {
+                  slidesPerView: 3,
+                  spaceBetween: 10,
+                },
+                1280: {
+                  slidesPerView: 3,
+                  spaceBetween: 15,
+                }
+              }}
+              className="property-swiper"
+            >
+              {currentHouse.images && currentHouse.images.map((image, index) => (
+                <SwiperSlide key={index} className="cursor-pointer">
+                  <div 
+                    onClick={() => handleImageClick(image.url)}
+                    className="relative group overflow-hidden rounded"
+                  >
                     <img 
-                    key={index}
-                    src={image.url} 
-                    alt={`${currentHouse.title} - view ${index + 1}`}
-                    className="w-full h-[500px] lg:h-[400px] object-cover rounded"
-                  />
+                      src={image.url} 
+                      alt={`${currentHouse.title} - view ${index + 1}`}
+                      className="w-full h-[500px] object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <span className="text-white text-sm font-medium px-4 py-2 rounded-full bg-black bg-opacity-50">
+                        View Image
+                      </span>
+                    </div>
+                  </div>
                 </SwiperSlide>
-            ))}
-        </Swiper>
+              ))}
+            </Swiper>
+            <div className="swiper-custom-pagination flex justify-center mt-4"></div>
+          </div>
+        </div>
 
-    
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Description</h2>
-                <p className="text-gray-600 text-sm md:max-w-lg lg:max-w-2xl xl:max-w-4xl
-                ">{currentHouse.description}</p>
-              </div>
-    
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">Description</h2>
+          <p className="text-gray-600 text-sm md:max-w-lg lg:max-w-2xl xl:max-w-4xl">
+            {currentHouse.description}
+          </p>
+        </div>
 
-        <div className="flex flex-cik gap-8">
+        <div className="flex flex-col gap-8">
           <div className="">
             <div className="status-badge bg-blue-600 text-white py-1 px-3 rounded-full inline-block mr-2">
               {currentHouse.status}
@@ -255,18 +279,15 @@ const PropertyDetails = () => {
             <div className="mb-11 w-full">
               <h2 className="text-xl font-semibold mb-2">Property Details</h2>
               <div className="w-full">
-                <div className='gap-5 grid grid-cols-2 md:flex md:flex-wrap
-                 md:gap-11 lg:max-w-3xl mb-4'>
-                  <PropertyDetail icon={<House size={22} />} title='status' text={currentHouse.status}  />
-                  <PropertyDetail icon={<House size={22} />} title='type' text={currentHouse.type}  />
-                  <PropertyDetail icon={<BedSingle size={22} />} title='bedrooms' text={String(currentHouse.bedrooms)}  />
-                  <PropertyDetail icon={<Bath size={22} />} title='bathrooms' text={String(currentHouse.bathrooms)}  />
-                  <PropertyDetail icon={<LandPlot size={22}/>} title='Area' text={String(`${currentHouse.surface}m²`).toLocaleString()}  />
+                <div className='gap-5 grid grid-cols-2 md:flex md:flex-wrap md:gap-11 lg:max-w-3xl mb-4'>
+                  <PropertyDetail icon={<House size={22} />} title='status' text={currentHouse.status} />
+                  <PropertyDetail icon={<House size={22} />} title='type' text={currentHouse.type} />
+                  <PropertyDetail icon={<BedSingle size={22} />} title='bedrooms' text={String(currentHouse.bedrooms)} />
+                  <PropertyDetail icon={<Bath size={22} />} title='bathrooms' text={String(currentHouse.bathrooms)} />
+                  <PropertyDetail icon={<LandPlot size={22}/>} title='Area' text={String(`${currentHouse.surface}m²`).toLocaleString()} />
                 </div>
               </div>
             </div>
-            
-
             
             <div className="mt-8">
               <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg mr-4">
@@ -279,6 +300,27 @@ const PropertyDetails = () => {
           </div>
         </div>
       </div>
+      
+      {/* Custom Image Modal */}
+      {modalVisible && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80" onClick={handleModalClose}>
+          <div className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center">
+            <button 
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white text-black"
+              onClick={handleModalClose}
+            >
+              <X size={24} />
+            </button>
+            <img 
+              src={selectedImage} 
+              alt="Property view"
+              className="max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+      
       <Footer />
     </>
   );

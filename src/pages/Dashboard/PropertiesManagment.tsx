@@ -121,13 +121,14 @@ const PropertiesManagement = () => {
       const propertyData = {
         ...values,
         address: values.location, // Map location field to address
-        images: imageUrls
+        images: imageUrls.map(image => image.url)
       };
 
       setLoading(true);
       
       if (editingProperty) {
         // Update existing property
+        console.log(' editing property data, ',propertyData)
         await updateProperty(Number(editingProperty.id), propertyData);
         message.success('Property updated successfully');
       } else {

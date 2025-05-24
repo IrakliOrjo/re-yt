@@ -11,7 +11,7 @@ export const Input:FC <InputProps> = ({placeholder,onChange,value}) => {
   return (
         <input 
             className="inline-flex justify-between gap-x-1.5 rounded-3xl border-[1px]
-              xl:rounded-none w-full px-4 md:px-3 xl:px-0 py-2 text-md 
+              xl:rounded-none w-full px-4 md:px-3 xl:px-0  text-md 
             text-gray-900 shadow-sm lg:shadow-none placeholder-gray-900 md:border-none
               outline-none"
             placeholder={placeholder}

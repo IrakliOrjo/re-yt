@@ -29,8 +29,8 @@ export const Button:FC<ButtonProps> = ({ text, transparent, variant='primary', i
   }
 
   return (
-    <button className={`${transparent ? 'bg-transparent text-black' : 'bg-blue-700 text-white'}  hover:bg-blue-600 font-[500]
-             hover:text-white py-[12px] items-center min-w-[8rem] max-h-[3rem] px-[20px] flex gap-2 border border-blue-700 hover:border-transparent rounded-full ${className}`}
+    <button className={`${transparent ? 'bg-transparent text-black' : 'bg-blue-700 text-white'}  hover:bg-blue-600 font-[500] transition-colors duration-300
+             hover:text-white py-[12px] items-center min-w-[8rem] justify-center max-h-[3rem] px-[20px] flex gap-2 border border-blue-700 hover:border-transparent rounded-full ${className}`}
               onClick={onClick}
              >
                 {leftIcon}

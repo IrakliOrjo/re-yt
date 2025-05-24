@@ -19,31 +19,7 @@ html {
   
 }
 
-.swiper-custom-pagination {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 30px;
-}
-
-.swiper-custom-bullet {
-  width: 8px;
-  height: 8px;
-  display: inline-block;
-  border-radius: 50%;
-  background: #ddd;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.swiper-custom-bullet-active {
-  background: #2563eb;
-  width: 8px;
-  border-radius: 4px;
-}
+ 
 
 /* Optional: Style navigation arrows */
 .swiper-button-next,
@@ -72,4 +48,98 @@ html {
   .swiper-button-prev {
     display: none;
   }
+}
+
+/* Add these styles to your CSS file or add them inline in your component */
+
+/* Swiper Styles for Full Width */
+.property-swiper {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.property-swiper .swiper-slide {
+  height: 500px;
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .property-swiper .swiper-slide {
+    height: 400px;
+  }
+}
+
+/* Custom pagination bullets */
+.swiper-custom-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.swiper-custom-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.swiper-custom-bullet-active {
+  background-color: #1a73e8;
+  width: 12px;
+  height: 12px;
+}
+
+/* Image hover effect */
+.property-swiper .swiper-slide img {
+  transition: transform 0.3s ease;
+}
+
+.property-swiper .swiper-slide:hover img {
+  transform: scale(1.05);
+}
+
+/* Modal overlay styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
 }

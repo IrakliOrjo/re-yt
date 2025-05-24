@@ -33,7 +33,7 @@ export const SearchInput = () => {
     flex items-center flex-col relative rounded-2xl w-full max-w-[45rem] lg:max-w-[1280px]">
       <div className="flex flex-col lg:flex-row gap-6 items-center mb-5 xl:px-[40px] md:border-none
       w-full px-4">
-      <div className="flex flex-col  xl:border-r-2 px-3 xl:mr-4 w-full gap-2">
+      <div className="flex flex-col  xl:border-r-2 px-3 xl:mr-4 w-full">
         <p className="text-gray-400 text-sm font-[500]">Type</p>
         <HouseTypeDropdown
           selectedType={type}
@@ -60,7 +60,7 @@ export const SearchInput = () => {
         rightIcon={<Settings />} 
         transparent  
         text="Search Advanced" 
-        className="min-w-[14rem]"
+        className="min-w-[15rem]"
         />
         <Button rightIcon={<SearchIcon strokeColor="white" viewBox="0 0 26 26" />} text="Search" onClick={handleSearch} />
       </div>

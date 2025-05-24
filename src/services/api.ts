@@ -243,6 +243,7 @@ export async function createProperty(property: Property): Promise<Property> {
 
 // Update an existing property
 export async function updateProperty(id: number, property: Property): Promise<Property> {
+  console.log('update property', property)
   return fetchWithAuth<Property>(`/api/properties/${id}`, {
     method: 'PUT',
     body: JSON.stringify(property)
